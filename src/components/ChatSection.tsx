@@ -32,7 +32,6 @@ export default function ChatSection({
     setInput("");
     setLoading(true);
 
-    // API 호출 (Ollama 또는 백엔드)
     const res = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -44,10 +43,9 @@ export default function ChatSection({
     });
     const data = await res.json();
 
-    // bot 메시지 추가
     const botMsg: ChatMessage = {
       id: crypto.randomUUID(),
-      role: "bot",
+      role: "assistant",
       text: data.answer,
       timestamp: Date.now(),
       category: "전체",

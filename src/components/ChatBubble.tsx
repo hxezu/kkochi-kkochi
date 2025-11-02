@@ -1,5 +1,5 @@
 interface ChatBubbleProps {
-  role: "user" | "bot";
+  role: "user" | "assistant";
   text: string;
 }
 

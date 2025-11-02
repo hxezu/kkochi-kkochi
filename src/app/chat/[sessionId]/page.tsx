@@ -1,19 +1,32 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useChat } from "@/hooks/useChat";
+import { useEffect } from "react";
 import ChatSection from "@/components/ChatSection";
 
 export default function ChatPage() {
   const params = useParams();
-  const { chatSessions, addMessage } = useChat();
+  const router = useRouter();
+  const { chatSessions, addMessage, mounted } = useChat();
 
   const sessionId = params?.sessionId;
-  if (!sessionId || Array.isArray(sessionId) || !chatSessions[sessionId]) {
-    return (
-      <div className="flex-1 flex items-center justify-center text-gray-400">
-        존재하지 않는 세션입니다.
-      </div>
-    );
+
+  useEffect(() => {
+    if (mounted) {
+      // mounted 된 후에만 세션 체크
+      if (!sessionId || Array.isArray(sessionId) || !chatSessions[sessionId]) {
+        router.replace("/");
+      }
+    }
+  }, [sessionId, chatSessions, router, mounted]);
+
+  if (
+    !mounted ||
+    !sessionId ||
+    Array.isArray(sessionId) ||
+    !chatSessions[sessionId]
+  ) {
+    return null; // mounted 전에는 아무것도 렌더링하지 않음
   }
 
   return (

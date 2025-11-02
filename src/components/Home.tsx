@@ -3,8 +3,8 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useChat } from "@/hooks/useChat";
 import WelcomePanel from "@/components/WelcomePanel";
-import ChatSection from "@/components/ChatSection";
 import { ChatMessage } from "@/types/chat";
+import ChatSection from "./ChatSection";
 
 export default function Home() {
   const { chatSessions, addMessage } = useChat();
@@ -25,14 +25,14 @@ export default function Home() {
     });
     const data = await res.json();
 
-    const botMsg: ChatMessage = {
+    const assistantMsg: ChatMessage = {
       id: uuidv4(),
-      role: "bot",
+      role: "assistant",
       text: data.answer,
       timestamp: Date.now(),
       category,
     };
-    addMessage(sessionId, botMsg);
+    addMessage(sessionId, assistantMsg);
   };
 
   return (

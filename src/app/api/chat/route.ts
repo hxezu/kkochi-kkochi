@@ -7,7 +7,11 @@ const openai = new OpenAI({
 });
 
 export async function POST(req: NextRequest) {
-  const { category, message } = await req.json();
+  const { category, message, context } = (await req.json()) as {
+    category: string;
+    message: string;
+    context: { role: "user" | "assistant"; text: string }[];
+  };
 
   const systemPrompt = `
 당신은 프론트엔드 개발자 면접관입니다.
@@ -18,17 +22,23 @@ export async function POST(req: NextRequest) {
 [현재 카테고리] ${category}
 `;
 
+  const messages: { role: "system" | "user" | "assistant"; content: string }[] =
+    [
+      { role: "system", content: systemPrompt },
+      ...context.map((m) => ({
+        role: m.role,
+        content: m.text,
+      })),
+      { role: "user", content: message || "" },
+    ];
+
   try {
     const response = await openai.chat.completions.create({
-      model: "gemini-2.5-flash", // 최신 버전 추천
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: message || "" }, // 메시지가 없으면 빈 문자열
-      ],
+      model: "gemini-2.5-flash",
+      messages,
     });
 
-    const answer =
-      response.choices?.[0]?.message?.content || "응답이 없습니다 😅";
+    const answer = response.choices?.[0]?.message?.content || "응답이 없습니다";
     return NextResponse.json({ answer });
   } catch (err: unknown) {
     let errorMessage = "알 수 없는 오류가 발생했습니다.";
