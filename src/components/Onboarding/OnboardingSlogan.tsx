@@ -1,6 +1,6 @@
 export default function OnboardingSlogan() {
   return (
-    <div className="w-full text-center space-y-2 text-xl md:text-2xl font-santokki">
+    <div className="w-full text-center space-y-2 text-lg md:text-2xl font-santokki">
       <p>
         오늘은 <span className="text-(--color-primary-200)">꼬치꼬치</span>가
       </p>

@@ -15,16 +15,16 @@ export default function CategoryItem({
     <button
       onClick={() => onSelectCategory(name)}
       className="
-        px-10 py-5 rounded-2xl shadow-card cursor-pointer 
-        w-45 h-25 flex flex-col justify-center items-center
+        p-2 md:px-10 md:py-5 rounded-2xl shadow-card cursor-pointer 
+        w-25 h-20 md:w-45 md:h-25 flex flex-col justify-center items-center
         transition transform duration-200 ease-in-out
         hover:scale-105 hover:shadow-lg
       "
     >
-      <div className="w-10 h-10 relative">
+      <div className="w-5 h-5 md:w-10 md:h-10 relative">
         <Image src={icon} alt={name} fill />
       </div>
-      <span className="mt-3 font-bold text-sm">{name}</span>
+      <span className="mt-3 font-bold text-[10px] md:text-sm">{name}</span>
     </button>
   );
 }
