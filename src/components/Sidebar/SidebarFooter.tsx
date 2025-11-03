@@ -1,16 +1,22 @@
+"use client";
+
+import { useSidebarStore } from "@/stores/useSidebarStore";
 import { Moon, Sun } from "lucide-react";
+import { useState } from "react";
 
-interface Props {
-  darkMode: boolean;
-  setDarkMode: (value: boolean) => void;
-}
+export default function SidebarFooter() {
+  const { open } = useSidebarStore();
+  const [darkMode, setDarkMode] = useState(false);
 
-export default function SidebarFooter({ darkMode, setDarkMode }: Props) {
   return (
-    <div className="p-4 h-10 flex justify-end items-end">
+    <div
+      className={`flex items-center mb-4 px-6 ${
+        open ? "justify-end" : "justify-center flex-col"
+      }`}
+    >
       <button
         onClick={() => setDarkMode(!darkMode)}
-        className="flex items-center justify-center p-1 border border-(--color-gray-200) rounded-full transition h-8 w-8 text-(--color-gray-300) cursor-pointer"
+        className="flex items-center justify-center p-2 border border-(--color-gray-200) rounded-full text-(--color-gray-300) cursor-pointer w-8 h-8"
       >
         {darkMode ? <Sun size={18} /> : <Moon size={18} />}
       </button>

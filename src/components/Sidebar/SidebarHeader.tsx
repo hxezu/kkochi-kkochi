@@ -1,29 +1,46 @@
+"use client";
+
+import { useSidebarStore } from "@/stores/useSidebarStore";
 import { PanelLeft } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-interface Props {
-  onClose: () => void;
-}
-
-export default function SidebarHeader({ onClose }: Props) {
+export default function SidebarHeader() {
+  const { open, toggle } = useSidebarStore();
   const router = useRouter();
-  const handleClick = () => {
-    router.push("/");
-  };
-  return (
-    <div className="h-[60px] p-5 flex items-center justify-between">
+
+  return open ? (
+    <div className="h-[60px] p-2 flex items-center justify-between w-full">
       <div
-        className="flex items-center space-x-2 cursor-pointer"
-        onClick={handleClick}
+        className="flex items-center gap-2 cursor-pointer pl-2"
+        onClick={() => router.push("/")}
       >
         <Image src="/logo.svg" alt="logo" width={28} height={30} />
       </div>
       <button
-        onClick={onClose}
+        onClick={toggle}
         className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
       >
         <PanelLeft size={20} strokeWidth={1.8} />
+      </button>
+    </div>
+  ) : (
+    <div className="h-[60px] p-2 w-full flex items-center justify-center">
+      <button
+        onClick={toggle}
+        className="relative w-8 h-8 flex items-center justify-center cursor-pointer rounded hover:bg-gray-100 group"
+      >
+        <PanelLeft
+          size={20}
+          className="absolute opacity-0 group-hover:opacity-100"
+        />
+        <Image
+          src="/logo.svg"
+          alt="logo"
+          width={28}
+          height={30}
+          className="group-hover:opacity-0"
+        />
       </button>
     </div>
   );
