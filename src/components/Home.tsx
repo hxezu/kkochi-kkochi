@@ -1,10 +1,9 @@
 "use client";
-import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/navigation";
 import { useChat } from "@/hooks/useChat";
-import WelcomePanel from "@/components/WelcomePanel";
 import { ChatMessage } from "@/types/chat";
+import OnboardingSection from "@/components/Onboarding/OnboardingSection";
 
 export default function Home() {
   const { addMessage } = useChat();
@@ -38,8 +37,8 @@ export default function Home() {
 
   return (
     <div className="flex justify-center items-center h-full">
-      <div className="w-full max-w-3xl h-full">
-        <WelcomePanel onSelectCategory={startChat} />
+      <div className="w-full h-full">
+        <OnboardingSection onSelectCategory={startChat} />
       </div>
     </div>
   );
