@@ -1,5 +1,38 @@
 @import "tailwindcss";
 
+.font-santokki {
+  font-family: "HSSanTokki", sans-serif;
+}
+
+@font-face {
+  font-family: "HSSanTokki";
+  src: url("/fonts/HSSanTokki.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "NanumGothic";
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/NanumGothicLight.otf") format("");
+}
+
+@font-face {
+  font-family: "NanumGothic";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/NanumGothic.otf") format("");
+}
+
+@font-face {
+  font-family: "NanumGothic";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/NanumGothicBold.otf") format("");
+}
+
 :root {
   --background: #f8f9fa;
   --black: #2f3438;
@@ -29,6 +62,6 @@
 body {
   background: var(--background);
   color: var(--black);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "NanumGothic", Arial, Helvetica, sans-serif;
   font-size: 15px;
 }

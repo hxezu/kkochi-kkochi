@@ -13,7 +13,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`fixed left-0 top-0 h-full w-[260px] flex flex-col justify-between 
+      className={`h-full w-[260px] flex flex-col justify-between 
        bg-white transition-colors duration-300`}
     >
       <SidebarHeader onClose={() => setOpen(false)} />

@@ -1,18 +1,17 @@
 "use client";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useRouter } from "next/navigation";
 import { useChat } from "@/hooks/useChat";
 import WelcomePanel from "@/components/WelcomePanel";
 import { ChatMessage } from "@/types/chat";
-import ChatSection from "./ChatSection";
 
 export default function Home() {
-  const { chatSessions, addMessage } = useChat();
-  const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
+  const { addMessage } = useChat();
+  const router = useRouter();
 
   const startChat = async (category: string) => {
     const sessionId = uuidv4();
-    setSelectedChatId(sessionId);
 
     const res = await fetch("/api/chat", {
       method: "POST",
@@ -33,19 +32,15 @@ export default function Home() {
       category,
     };
     addMessage(sessionId, assistantMsg);
+
+    router.push(`/chat/${sessionId}`);
   };
 
   return (
-    <div className="flex-1">
-      {selectedChatId && chatSessions[selectedChatId] ? (
-        <ChatSection
-          sessionId={selectedChatId}
-          messages={chatSessions[selectedChatId]}
-          addMessage={addMessage}
-        />
-      ) : (
+    <div className="flex justify-center items-center h-full">
+      <div className="w-full max-w-3xl h-full">
         <WelcomePanel onSelectCategory={startChat} />
-      )}
+      </div>
     </div>
   );
 }

@@ -1,4 +1,6 @@
+import Image from "next/image";
 import CategorySelect from "./CategorySelect";
+import onboardImg from "@/assets/images/onboarding.svg";
 
 interface WelcomePanelProps {
   onSelectCategory: (category: string) => void;
@@ -6,11 +8,25 @@ interface WelcomePanelProps {
 
 export default function WelcomePanel({ onSelectCategory }: WelcomePanelProps) {
   return (
-    <div className="flex-1 flex flex-col items-center justify-center text-gray-700">
-      <h1 className="text-2xl font-bold mb-6">🧠 프론트엔드 CS 챗봇</h1>
-      <div className="text-center mb-4">
-        카테고리를 선택하면 면접 질문이 시작됩니다.
+    <div className="flex flex-col h-full items-center justify-center gap-5">
+      <div className="w-44 h-36 relative">
+        <Image
+          src={onboardImg}
+          alt="온보딩 로고 이미지"
+          fill
+          style={{ objectFit: "contain" }}
+          priority
+        />
       </div>
+
+      <p className="text-2xl font-santokki">
+        오늘은 <span className="text-(--color-primary-200)">꼬치꼬치</span>가
+      </p>
+      <p className="text-2xl font-santokki">
+        어떤 <span className="text-(--color-primary-200)">면접 질문</span>을
+        캐물어볼까요 ?
+      </p>
+
       <CategorySelect onSelectCategory={onSelectCategory} />
     </div>
   );
