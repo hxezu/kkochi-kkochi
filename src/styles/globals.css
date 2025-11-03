@@ -78,3 +78,14 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+html,
+body {
+  height: 100%;
+  overscroll-behavior-y: contain;
+}
+
+input,
+textarea {
+  font-size: 16px;
+}

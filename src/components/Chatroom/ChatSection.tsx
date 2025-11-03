@@ -18,6 +18,7 @@ export default function ChatSection({
 }: ChatSectionProps) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -26,6 +27,46 @@ export default function ChatSection({
       behavior: "smooth",
     });
   }, [messages]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.visualViewport) return;
+
+    const viewport = window.visualViewport;
+
+    const handleResize = () => {
+      const keyboardHeight = Math.max(
+        0,
+        window.innerHeight - viewport.height - viewport.offsetTop
+      );
+
+      const safeAreaBottom =
+        Number(
+          getComputedStyle(document.documentElement)
+            .getPropertyValue("--sat")
+            ?.replace("px", "")
+        ) || 0;
+
+      setKeyboardOffset(keyboardHeight + safeAreaBottom);
+    };
+
+    viewport.addEventListener("resize", handleResize);
+    viewport.addEventListener("scroll", handleResize);
+
+    handleResize(); // 초기 호출
+
+    return () => {
+      viewport.removeEventListener("resize", handleResize);
+      viewport.removeEventListener("scroll", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const safeArea = window
+      .getComputedStyle(document.documentElement)
+      .getPropertyValue("env(safe-area-inset-bottom)");
+    document.documentElement.style.setProperty("--sat", safeArea);
+  }, []);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -65,11 +106,10 @@ export default function ChatSection({
 
   return (
     <div className="relative flex flex-col h-full w-full max-w-3xl mx-auto">
-      {/* 메시지 리스트: 헤더(60px) + 입력창(80px 정도) 제외 */}
+      {/* 메시지 리스트 */}
       <div
         ref={scrollRef}
-        className="overflow-y-auto px-4 scrollbar-hide"
-        style={{ height: "calc(100vh - 60px - 90px)" }} // 60(header) + 90(input)
+        className="flex-1 overflow-y-auto px-4 pt-6 pb-24 scrollbar-hide"
       >
         <ChatMessageList
           messages={messages}
@@ -78,8 +118,12 @@ export default function ChatSection({
         />
       </div>
 
-      {/* 하단 고정 입력창 */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full px-4 pb-0">
+      <div
+        className="absolute left-1/2 -translate-x-1/2 w-full max-w-3xl px-4 transition-all duration-200"
+        style={{
+          bottom: `calc(${keyboardOffset}px + env(safe-area-inset-bottom, 0px))`,
+        }}
+      >
         <ChatInput
           input={input}
           setInput={setInput}
