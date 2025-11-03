@@ -2,7 +2,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { useChat } from "@/hooks/useChat";
 import { useEffect } from "react";
-import ChatSection from "@/components/ChatSection";
+import ChatSection from "@/components/Chatroom/ChatSection";
 
 export default function ChatPage() {
   const params = useParams();
@@ -26,11 +26,11 @@ export default function ChatPage() {
     Array.isArray(sessionId) ||
     !chatSessions[sessionId]
   ) {
-    return null; // mounted 전에는 아무것도 렌더링하지 않음
+    return null;
   }
 
   return (
-    <div className="flex-1">
+    <div className="h-full flex justify-center items-center">
       <ChatSection
         sessionId={sessionId}
         messages={chatSessions[sessionId]}

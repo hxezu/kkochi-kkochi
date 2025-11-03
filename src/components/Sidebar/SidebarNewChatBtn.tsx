@@ -13,7 +13,7 @@ export default function SidebarNewButton() {
   return (
     <button
       onClick={handleClick}
-      className="h-10 flex gap-2 items-center py-2 px-4 font-medium cursor-pointer 
+      className="h-10 flex gap-2 items-center py-2 px-4 font-bold cursor-pointer 
         rounded-lg transition text-[var(--color-primary-200)] 
         hover:bg-[var(--background)]"
     >

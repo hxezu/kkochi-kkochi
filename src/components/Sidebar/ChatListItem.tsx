@@ -30,13 +30,13 @@ export default function ChatListItem({
       className={`px-4 py-2 flex items-center rounded-lg cursor-pointer text-sm font-medium transition-colors duration-150
         ${
           selected
-            ? "bg-[var(--color-gray-100)] text-[var(--color-text-strong)]"
+            ? "bg-[var(--color-gray-100)] text-[var(--color-text-strong)] "
             : "text-[var(--color-gray-400)] hover:bg-[var(--background)]"
         }
       `}
     >
       {/* 텍스트 영역 */}
-      <span className="flex-1 truncate ">{previewText}</span>
+      <span className="flex-1 truncate font-bold">{previewText}</span>
 
       {/* 아이콘 영역 */}
       <div className="w-5 shrink-0 flex justify-end">

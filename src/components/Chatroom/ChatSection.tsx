@@ -1,7 +1,9 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useRef, useEffect } from "react";
 import { ChatMessage } from "@/types/chat";
-import ChatBubble from "./ChatBubble";
+import ChatMessageList from "./ChatMessageList";
+import ChatInput from "./ChatInput";
 
 interface ChatSectionProps {
   sessionId: string;
@@ -17,10 +19,19 @@ export default function ChatSection({
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // 새 메시지 올 때마다 스크롤 하단
+  useEffect(() => {
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [messages]);
+
   const sendMessage = async () => {
     if (!input.trim()) return;
 
-    // 사용자 메시지 추가
     const userMsg: ChatMessage = {
       id: crypto.randomUUID(),
       role: "user",
@@ -55,38 +66,18 @@ export default function ChatSection({
   };
 
   return (
-    <div className="flex flex-col h-full p-4">
-      <div className="flex-1 overflow-y-auto flex flex-col gap-2 mb-4">
-        {messages.map((msg) => (
-          <ChatBubble key={msg.id} role={msg.role} text={msg.text} />
-        ))}
-        {loading && <div className="text-gray-400">생각 중...</div>}
-      </div>
-
-      <div className="flex gap-2">
-        <input
-          type="text"
-          className="flex-1 border rounded p-2"
-          placeholder="답변을 입력하세요..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              if (e.nativeEvent.isComposing === false && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-              }
-            }
-          }}
-        />
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-          onClick={sendMessage}
-          disabled={loading}
-        >
-          보내기
-        </button>
-      </div>
+    <div className="flex flex-col h-full w-full max-w-3xl mx-auto">
+      <ChatMessageList
+        messages={messages}
+        loading={loading}
+        scrollRef={scrollRef}
+      />
+      <ChatInput
+        input={input}
+        setInput={setInput}
+        sendMessage={sendMessage}
+        loading={loading}
+      />
     </div>
   );
 }
