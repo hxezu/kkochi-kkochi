@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     siteName: "꼬치꼬치",
     images: [
       {
-        url: "/og-image.png",
+        url: "https://kkochi-kkochi.vercel.app/og-image.png",
         width: 1200,
         height: 630,
         alt: "꼬치꼬치 프론트엔드 면접 챗봇",
