@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ko_KR",
-    url: "https://your-domain.com",
+    url: "https://kkochi-kkochi.vercel.app/",
     title: "꼬치꼬치 - 프론트엔드 면접 준비 챗봇",
     description:
       "프론트엔드 개발자를 위한 CS 면접 연습 챗봇입니다. JavaScript, React, TypeScript 등 다양한 주제로 면접을 준비하세요.",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     // other: "your-other-verification-code",
   },
   alternates: {
-    canonical: "https://your-domain.com", // 실제 도메인으로 변경
+    canonical: "https://kkochi-kkochi.vercel.app/", // 실제 도메인으로 변경
   },
 };
 
