@@ -20,9 +20,7 @@ export default function SidebarChatList() {
   const chatEntries = Object.entries(chatSessions);
 
   if (chatEntries.length === 0) {
-    return (
-      <div className="text-gray-400 text-sm p-2">아직 대화가 없습니다.</div>
-    );
+    return <></>;
   }
 
   return (
