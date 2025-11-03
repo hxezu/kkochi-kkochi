@@ -30,7 +30,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="h-full flex justify-center items-center">
+    <div className="flex-1 flex justify-center items-center">
       <ChatSection
         sessionId={sessionId}
         messages={chatSessions[sessionId]}

@@ -1,4 +1,3 @@
-// ChatMessageList.tsx
 "use client";
 
 import { RefObject } from "react";

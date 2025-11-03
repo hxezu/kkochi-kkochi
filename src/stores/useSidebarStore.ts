@@ -1,13 +1,13 @@
 import { create } from "zustand";
 
-interface SidebarState {
+interface SidebarStore {
   open: boolean;
   toggle: () => void;
-  setOpen: (value: boolean) => void;
+  close: () => void;
 }
 
-export const useSidebarStore = create<SidebarState>((set) => ({
-  open: true,
+export const useSidebarStore = create<SidebarStore>((set) => ({
+  open: false,
   toggle: () => set((state) => ({ open: !state.open })),
-  setOpen: (value: boolean) => set({ open: value }),
+  close: () => set({ open: false }),
 }));

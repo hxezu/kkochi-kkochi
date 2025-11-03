@@ -10,8 +10,8 @@ export default function SidebarFooter() {
 
   return (
     <div
-      className={`flex items-center mb-4 px-6 ${
-        open ? "justify-end" : "justify-center flex-col"
+      className={`flex items-center mb-4 px-4 ${
+        open ? "justify-end" : "justify-center"
       }`}
     >
       <button

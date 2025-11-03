@@ -34,13 +34,9 @@ export default function SidebarHeader() {
           size={20}
           className="absolute opacity-0 group-hover:opacity-100"
         />
-        <Image
-          src="/logo.svg"
-          alt="logo"
-          width={28}
-          height={30}
-          className="group-hover:opacity-0"
-        />
+        <div className="group-hover:opacity-0">
+          <Image src="/logo.svg" alt="logo" width={28} height={30} />
+        </div>
       </button>
     </div>
   );
