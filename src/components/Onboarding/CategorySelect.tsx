@@ -24,7 +24,7 @@ export default function CategorySelect({
   ];
 
   return (
-    <div className="flex flex-wrap justify-center max-w-[768px] gap-10 mt-4 px-5">
+    <div className="flex flex-wrap justify-center max-w-[768px] gap-6 md:gap-10 mt-4 px-5">
       {categories.map((c) => (
         <CategoryItem
           key={c.name}

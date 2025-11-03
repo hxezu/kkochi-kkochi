@@ -18,7 +18,7 @@ export default function ChatMessageList({
   return (
     <div
       ref={scrollRef}
-      className="flex-1 overflow-y-auto flex flex-col gap-2 p-4 pt-6 scrollbar-hide"
+      className="flex-1 overflow-y-auto flex flex-col gap-4 p-4 pt-0 scrollbar-hide"
     >
       {messages.map((msg) => (
         <ChatBubble
