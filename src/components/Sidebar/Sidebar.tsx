@@ -1,4 +1,5 @@
 "use client";
+
 import SidebarHeader from "./SidebarHeader";
 import SidebarChatList from "./SidebarChatList";
 import SidebarFooter from "./SidebarFooter";
@@ -7,9 +8,22 @@ import { useSidebarStore } from "@/stores/useSidebarStore";
 import { useEffect } from "react";
 
 export default function Sidebar() {
-  const { open, close } = useSidebarStore();
+  const { open, close, setOpen } = useSidebarStore();
 
-  // 모바일에서 외부 클릭 시 닫기
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setOpen(false);
+      } else {
+        setOpen(true);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [setOpen]);
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const sidebar = document.getElementById("sidebar");

@@ -18,10 +18,8 @@ export default function ChatSection({
 }: ChatSectionProps) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // 새 메시지 올 때마다 스크롤 하단
   useEffect(() => {
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
@@ -66,18 +64,29 @@ export default function ChatSection({
   };
 
   return (
-    <div className="flex flex-col h-full w-full max-w-3xl mx-auto">
-      <ChatMessageList
-        messages={messages}
-        loading={loading}
-        scrollRef={scrollRef}
-      />
-      <ChatInput
-        input={input}
-        setInput={setInput}
-        sendMessage={sendMessage}
-        loading={loading}
-      />
+    <div className="relative flex flex-col h-full w-full max-w-3xl mx-auto">
+      {/* 메시지 리스트: 헤더(60px) + 입력창(80px 정도) 제외 */}
+      <div
+        ref={scrollRef}
+        className="overflow-y-auto px-4 scrollbar-hide"
+        style={{ height: "calc(100vh - 60px - 90px)" }} // 60(header) + 90(input)
+      >
+        <ChatMessageList
+          messages={messages}
+          loading={loading}
+          scrollRef={scrollRef}
+        />
+      </div>
+
+      {/* 하단 고정 입력창 */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full px-4 pb-0">
+        <ChatInput
+          input={input}
+          setInput={setInput}
+          sendMessage={sendMessage}
+          loading={loading}
+        />
+      </div>
     </div>
   );
 }

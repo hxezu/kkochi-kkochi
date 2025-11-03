@@ -7,5 +7,5 @@ interface ChatLayoutProps {
 }
 
 export default function ChatLayout({ children }: ChatLayoutProps) {
-  return <div className="flex-1 overflow-hidden">{children}</div>;
+  return <div className="h-full overflow-hidden">{children}</div>;
 }

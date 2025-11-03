@@ -13,7 +13,6 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (mounted) {
-      // mounted 된 후에만 세션 체크
       if (!sessionId || Array.isArray(sessionId) || !chatSessions[sessionId]) {
         router.replace("/");
       }
@@ -30,7 +29,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex-1 flex justify-center items-center">
+    <div className="h-full flex justify-center">
       <ChatSection
         sessionId={sessionId}
         messages={chatSessions[sessionId]}

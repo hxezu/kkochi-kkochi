@@ -24,22 +24,24 @@ export default function ChatInput({
   };
 
   return (
-    <div className="flex mx-4 gap-2 mb-8 shrink-0 max-w-3xl bg-white py-3 px-7 h-14 rounded-full shadow-card items-center">
-      <input
-        type="text"
-        className="flex-1 rounded p-2 outline-none focus:ring-0"
-        placeholder="답변을 입력하세요..."
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={handleKeyDown}
-      />
-      <button
-        className="rounded text-(--color-primary-200) disabled:text-(--color-gray-200) transition-colors duration-300 cursor-pointer"
-        onClick={sendMessage}
-        disabled={loading}
-      >
-        <Send size={18} />
-      </button>
+    <div className="flex justify-center w-full px-4 mb-8">
+      <div className="flex gap-2 w-full max-w-3xl bg-white py-3 px-7 h-14 rounded-full shadow-card items-center">
+        <input
+          type="text"
+          className="flex-1 rounded p-2 outline-none focus:ring-0"
+          placeholder="답변을 입력하세요..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <button
+          className="rounded text-(--color-primary-200) disabled:text-(--color-gray-200) transition-colors duration-300 cursor-pointer"
+          onClick={sendMessage}
+          disabled={loading}
+        >
+          <Send size={18} />
+        </button>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Ellipsis, Menu, Plus } from "lucide-react";
+import { Ellipsis, Plus, TextAlignStart } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useSidebarStore } from "@/stores/useSidebarStore";
 
@@ -17,14 +17,14 @@ export default function ChatSectionHeader() {
   const isChatPage = pathname?.startsWith("/chat/");
 
   return (
-    <div className="sticky top-0 z-50 h-[60px] backdrop-blur-md bg-white/10 flex py-3 justify-between px-4 md:px-7 text-(--color-primary-200)">
+    <div className="sticky top-0 z-50 h-[60px] backdrop-blur-md bg-white/10 flex py-3 justify-between px-4 md:px-7 text-(--color-primary-200) items-center">
       {/* 모바일 메뉴 */}
       <div className="flex items-center gap-3 md:hidden">
         <button
           onClick={toggle}
           className="p-2 hover:bg-gray-100 rounded cursor-pointer"
         >
-          <Menu size={20} />
+          <TextAlignStart size={16} />
         </button>
         <div
           className="flex items-center gap-2 cursor-pointer"
