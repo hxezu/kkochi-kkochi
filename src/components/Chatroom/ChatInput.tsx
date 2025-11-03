@@ -25,17 +25,17 @@ export default function ChatInput({
 
   return (
     <div className="flex justify-center w-full px-4 mb-8">
-      <div className="flex gap-2 w-full max-w-3xl bg-white py-3 px-7 h-14 rounded-full shadow-card items-center">
+      <div className="flex gap-2 w-full max-w-3xl bg-white py-3 px-4 h-14 rounded-full shadow-card items-center">
         <input
           type="text"
-          className="flex-1 rounded p-2 outline-none focus:ring-0"
+          className="flex-1 min-w-0 rounded p-2 outline-none focus:ring-0 text-xs sm:text-base placeholder:text-xs sm:placeholder:text-base"
           placeholder="답변을 입력하세요..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
         />
         <button
-          className="rounded text-(--color-primary-200) disabled:text-(--color-gray-200) transition-colors duration-300 cursor-pointer"
+          className="shrink-0 w-10 h-10 flex items-center justify-center rounded text-(--color-primary-200) disabled:text-(--color-gray-200) transition-colors duration-300 cursor-pointer"
           onClick={sendMessage}
           disabled={loading}
         >
