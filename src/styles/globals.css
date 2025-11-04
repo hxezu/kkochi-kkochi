@@ -36,6 +36,7 @@
 :root {
   --background: #f8f9fa;
   --black: #2f3438;
+  --red: #ff6060;
   --color-gray-400: #828c94;
   --color-gray-300: #b4bac2;
   --color-gray-200: #e5e8eb;
@@ -88,4 +89,19 @@ body {
 input,
 textarea {
   font-size: 16px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.15s ease-out;
 }

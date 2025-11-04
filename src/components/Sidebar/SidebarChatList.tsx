@@ -5,7 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import ChatListItem from "./ChatListItem";
 
 export default function SidebarChatList() {
-  const { chatSessions, mounted } = useChat();
+  const { chatSessions, mounted, clearHistory } = useChat();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -32,6 +32,10 @@ export default function SidebarChatList() {
           msgs={msgs}
           selected={selectedChatId === id}
           onSelect={() => router.push(`/chat/${id}`)}
+          onDelete={(chatId) => {
+            clearHistory(chatId);
+            if (selectedChatId === chatId) router.push("/");
+          }}
         />
       ))}
     </div>
