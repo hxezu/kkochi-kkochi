@@ -3,6 +3,7 @@
 import { RefObject } from "react";
 import { ChatMessage } from "@/types/chat";
 import ChatBubble from "./ChatBubble";
+import LoadingBubble from "./LoadingBubble";
 
 interface ChatMessageListProps {
   messages: ChatMessage[];
@@ -28,7 +29,7 @@ export default function ChatMessageList({
           timestamp={msg.timestamp}
         />
       ))}
-      {loading && <div className="text-gray-400">생각 중...</div>}
+      {loading && <LoadingBubble />}
     </div>
   );
 }

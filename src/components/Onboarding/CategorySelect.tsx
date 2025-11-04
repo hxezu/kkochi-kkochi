@@ -1,4 +1,3 @@
-// CategorySelect.tsx
 import allImg from "@/assets/icons/category-all.svg";
 import csImg from "@/assets/icons/category-cs.svg";
 import htmlcssImg from "@/assets/icons/category-htmlcss.svg";

@@ -4,15 +4,18 @@ import { useState, useRef, useEffect } from "react";
 import { ChatMessage } from "@/types/chat";
 import ChatMessageList from "./ChatMessageList";
 import ChatInput from "./ChatInput";
+import { useChatApi } from "@/hooks/useChatApi";
 
 interface ChatSectionProps {
   sessionId: string;
+  category: string;
   messages: ChatMessage[];
   addMessage: (sessionId: string, message: ChatMessage) => void;
 }
 
 export default function ChatSection({
   sessionId,
+  category,
   messages,
   addMessage,
 }: ChatSectionProps) {
@@ -20,6 +23,49 @@ export default function ChatSection({
   const [loading, setLoading] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { sendMessage: sendApiMessage } = useChatApi();
+  const initialLoadRef = useRef(false);
+
+  // 초기 메시지 로드
+  useEffect(() => {
+    const loadInitialMessage = async () => {
+      if (messages.length === 0 && !initialLoadRef.current) {
+        initialLoadRef.current = true;
+        setLoading(true);
+
+        try {
+          const answer = await sendApiMessage({
+            category,
+            message: "",
+            context: [],
+          });
+
+          const assistantMsg: ChatMessage = {
+            id: crypto.randomUUID(),
+            role: "assistant",
+            text: answer,
+            timestamp: Date.now(),
+            category,
+          };
+          addMessage(sessionId, assistantMsg);
+        } catch (error) {
+          console.error("Failed to fetch initial message:", error);
+          const errorMsg: ChatMessage = {
+            id: crypto.randomUUID(),
+            role: "assistant",
+            text: "죄송합니다. 오류가 발생했습니다. 다시 시도해주세요.",
+            timestamp: Date.now(),
+            category,
+          };
+          addMessage(sessionId, errorMsg);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadInitialMessage();
+  }, [sessionId, messages.length, category, addMessage, sendApiMessage]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
@@ -52,7 +98,7 @@ export default function ChatSection({
     viewport.addEventListener("resize", handleResize);
     viewport.addEventListener("scroll", handleResize);
 
-    handleResize(); // 초기 호출
+    handleResize();
 
     return () => {
       viewport.removeEventListener("resize", handleResize);
@@ -76,37 +122,44 @@ export default function ChatSection({
       role: "user",
       text: input,
       timestamp: Date.now(),
-      category: "전체",
+      category,
     };
     addMessage(sessionId, userMsg);
     setInput("");
     setLoading(true);
 
-    const res = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        category: "전체",
+    try {
+      const answer = await sendApiMessage({
+        category,
         message: input,
         context: messages,
-      }),
-    });
-    const data = await res.json();
+      });
 
-    const botMsg: ChatMessage = {
-      id: crypto.randomUUID(),
-      role: "assistant",
-      text: data.answer,
-      timestamp: Date.now(),
-      category: "전체",
-    };
-    addMessage(sessionId, botMsg);
-    setLoading(false);
+      const botMsg: ChatMessage = {
+        id: crypto.randomUUID(),
+        role: "assistant",
+        text: answer,
+        timestamp: Date.now(),
+        category,
+      };
+      addMessage(sessionId, botMsg);
+    } catch (error) {
+      console.error("Failed to send message:", error);
+      const errorMsg: ChatMessage = {
+        id: crypto.randomUUID(),
+        role: "assistant",
+        text: "죄송합니다. 오류가 발생했습니다. 다시 시도해주세요.",
+        timestamp: Date.now(),
+        category,
+      };
+      addMessage(sessionId, errorMsg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="relative flex flex-col h-full w-full max-w-3xl mx-auto">
-      {/* 메시지 리스트 */}
       <div
         ref={scrollRef}
         className="flex-1 overflow-y-auto px-4 pt-6 pb-24 scrollbar-hide"
