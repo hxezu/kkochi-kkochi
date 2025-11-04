@@ -71,7 +71,7 @@ export const useChatStore = create<ChatState>()(
     {
       name: "chatSessions",
       onRehydrateStorage: () => (state) => {
-        state?.setHasHydrated(true); // ✅ hydration 완료 신호
+        state?.setHasHydrated(true);
       },
     }
   )

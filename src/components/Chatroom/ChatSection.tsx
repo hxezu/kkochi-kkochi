@@ -6,6 +6,9 @@ import ChatMessageList from "./ChatMessageList";
 import ChatInput from "./ChatInput";
 import { useChatApi } from "@/hooks/useChatApi";
 import { useChatStore } from "@/stores/useChatStore";
+import { useKeyboardOffset } from "@/hooks/useKeyboardOffset";
+import { useSafeArea } from "@/hooks/useSafeArea";
+import { useInitialMessage } from "@/hooks/useInitialMessage";
 
 interface ChatSectionProps {
   sessionId: string;
@@ -15,70 +18,19 @@ interface ChatSectionProps {
 export default function ChatSection({ sessionId, category }: ChatSectionProps) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [keyboardOffset, setKeyboardOffset] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { sendMessage: sendApiMessage } = useChatApi();
 
-  const hasLoadedInitialMessage = useRef(false);
+  const { sendMessage: sendApiMessage } = useChatApi();
   const { sessions, addMessage } = useChatStore();
   const messages = sessions[sessionId]?.messages || [];
 
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  useEffect(() => {
-    const unsub = useChatStore.persist.onFinishHydration(() => {
-      setIsHydrated(true);
-    });
-    setIsHydrated(useChatStore.persist.hasHydrated());
-    return () => unsub();
-  }, []);
-
-  useEffect(() => {
-    const loadInitialMessage = async () => {
-      if (!isHydrated) return; // 아직 복원 전이면 실행 X
-      if (hasLoadedInitialMessage.current || messages.length > 0) return;
-
-      hasLoadedInitialMessage.current = true;
-      setLoading(true);
-
-      try {
-        const answer = await sendApiMessage({
-          category,
-          message: "",
-          context: [],
-        });
-
-        const assistantMsg: ChatMessage = {
-          id: crypto.randomUUID(),
-          role: "assistant",
-          text: answer,
-          timestamp: Date.now(),
-          category,
-        };
-        addMessage(sessionId, assistantMsg);
-      } catch (error) {
-        console.error("Failed to fetch initial message:", error);
-        addMessage(sessionId, {
-          id: crypto.randomUUID(),
-          role: "assistant",
-          text: "죄송합니다. 오류가 발생했습니다. 다시 시도해주세요.",
-          timestamp: Date.now(),
-          category,
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadInitialMessage();
-  }, [
-    isHydrated,
+  const keyboardOffset = useKeyboardOffset();
+  useSafeArea();
+  const initialLoading = useInitialMessage(
     sessionId,
     category,
-    messages.length,
-    addMessage,
-    sendApiMessage,
-  ]);
+    messages.length
+  );
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
@@ -86,48 +38,6 @@ export default function ChatSection({ sessionId, category }: ChatSectionProps) {
       behavior: "smooth",
     });
   }, [messages]);
-
-  // 키보드 높이 감지
-  useEffect(() => {
-    if (typeof window === "undefined" || !window.visualViewport) return;
-
-    const viewport = window.visualViewport;
-
-    const handleResize = () => {
-      const keyboardHeight = Math.max(
-        0,
-        window.innerHeight - viewport.height - viewport.offsetTop
-      );
-
-      const safeAreaBottom =
-        Number(
-          getComputedStyle(document.documentElement)
-            .getPropertyValue("--sat")
-            ?.replace("px", "")
-        ) || 0;
-
-      setKeyboardOffset(keyboardHeight + safeAreaBottom);
-    };
-
-    viewport.addEventListener("resize", handleResize);
-    viewport.addEventListener("scroll", handleResize);
-
-    handleResize();
-
-    return () => {
-      viewport.removeEventListener("resize", handleResize);
-      viewport.removeEventListener("scroll", handleResize);
-    };
-  }, []);
-
-  // Safe area 설정
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const safeArea = window
-      .getComputedStyle(document.documentElement)
-      .getPropertyValue("env(safe-area-inset-bottom)");
-    document.documentElement.style.setProperty("--sat", safeArea);
-  }, []);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -180,7 +90,7 @@ export default function ChatSection({ sessionId, category }: ChatSectionProps) {
       >
         <ChatMessageList
           messages={messages}
-          loading={loading}
+          loading={loading || initialLoading}
           scrollRef={scrollRef}
         />
       </div>

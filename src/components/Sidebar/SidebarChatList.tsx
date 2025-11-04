@@ -15,6 +15,14 @@ export default function SidebarChatList() {
   const chatEntries = Object.entries(sessions);
   if (chatEntries.length === 0) return null;
 
+  const handleDelete = (id: string) => {
+    clearHistory(id);
+
+    if (selectedChatId === id) {
+      router.push("/");
+    }
+  };
+
   return (
     <div className="space-y-1">
       {chatEntries.map(([id, session]) => (
@@ -25,7 +33,7 @@ export default function SidebarChatList() {
           msgs={session.messages}
           selected={selectedChatId === id}
           onSelect={() => router.push(`/chat/${id}`)}
-          onDelete={(id) => clearHistory(id)}
+          onDelete={handleDelete}
           onRename={(id, newTitle) => renameSession(id, newTitle)}
         />
       ))}
