@@ -1,5 +1,3 @@
-import { formatTime } from "@/utils/formatTime";
-
 import UserBubble from "./UserBubble";
 import AssistantBubble from "./AssistantBubble";
 
