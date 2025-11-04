@@ -1,6 +1,9 @@
 # 🐦 꼬치꼬치 (Kkochi-Kkochi)
 
-> **개발 관련 지식을 꼬치꼬치 캐묻는 AI 면접관**  
+> 🔗 https://kkochi-kkochi.vercel.app/
+> 
+> **개발 관련 지식을 꼬치꼬치 캐묻는 AI 면접관**
+> 
 > CS, React, Javascript 등 다양한 주제로 실전처럼 연습하세요!
 
 [![배포 주소](https://kkochi-kkochi.vercel.app/og-image.png)](https://kkochi-kkochi.vercel.app/)
