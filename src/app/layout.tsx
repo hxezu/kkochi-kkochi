@@ -2,22 +2,24 @@ import type { Metadata } from "next";
 import "@/styles/globals.css";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import ChatSectionHeader from "@/components/Chatroom/ChatSectionHeader";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: {
-    default: "꼬치꼬치 - FE 면접 준비 챗봇",
+    default: "꼬치꼬치 - FE 개발자들의 AI 면접관",
     template: "%s | 꼬치꼬치",
   },
   description:
-    "프론트엔드 개발자를 위한 CS 면접 연습 챗봇입니다. JavaScript, React, TypeScript 등 다양한 주제로 면접을 준비하세요.",
+    "프론트엔드 개발자를 위한 AI 면접관 꼬치꼬치입니다. JavaScript, React, CS 등 다양한 주제로 면접을 준비하세요.",
   keywords: [
     "프론트엔드",
     "면접",
-    "챗봇",
+    "면접 준비",
     "CS",
     "JavaScript",
     "React",
-    "TypeScript",
+    "HTML/CSS",
+    "Next.js",
     "코딩 면접",
     "기술 면접",
   ],
@@ -30,16 +32,16 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ko_KR",
     url: "https://kkochi-kkochi.vercel.app/",
-    title: "꼬치꼬치 - 프론트엔드 면접 준비 챗봇",
+    title: "꼬치꼬치 - 개발자를 위한 AI 면접관",
     description:
-      "프론트엔드 개발자를 위한 CS 면접 연습 챗봇입니다. JavaScript, React, TypeScript 등 다양한 주제로 면접을 준비하세요.",
+      "프론트엔드 개발자를 위한 AI 면접관 꼬치꼬치입니다. JavaScript, React, CS 등 다양한 주제로 면접을 준비하세요.",
     siteName: "꼬치꼬치",
     images: [
       {
         url: "https://kkochi-kkochi.vercel.app/og-image.png",
         width: 1200,
         height: 630,
-        alt: "꼬치꼬치 프론트엔드 면접 챗봇",
+        alt: "꼬치꼬치 프론트엔드 개발자를 위한 AI 면접관",
       },
     ],
   },
@@ -69,6 +71,7 @@ export default function RootLayout({
             <main className="flex-1 overflow-hidden">{children}</main>
           </div>
         </div>
+        <Analytics />
       </body>
     </html>
   );
