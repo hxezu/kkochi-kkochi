@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🐦 꼬치꼬치 (Kkochi-Kkochi)
 
-## Getting Started
+> 🔗 https://kkochi-kkochi.vercel.app/
+> 
+> **개발 관련 지식을 꼬치꼬치 캐묻는 AI 면접관**
+> 
+> CS, React, Javascript 등 다양한 주제로 실전처럼 연습하세요!
 
-First, run the development server:
+[![배포 주소](https://kkochi-kkochi.vercel.app/og-image.png)](https://kkochi-kkochi.vercel.app/)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 프로젝트 개요
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**꼬치꼬치**는 프론트엔드 개발자 면접 대비를 돕는 **AI 챗봇 기반 학습 서비스**입니다.  
+면접관처럼 질문하고, 사용자의 답변을 분석하여 피드백과 꼬리질문을 제공합니다.  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+> “오늘은 꼬치꼬치가 어떤 면접 질문을 캐물어볼까요?”
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## ✨ 주요 기능
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| 온보딩 화면 | 면접 채팅 화면 |
+|--------------|----------------|
+| ![screenshot1](https://github.com/user-attachments/assets/66b7c8b3-1e27-46b5-bb27-99b1df55aaf2) | ![screenshot2](https://github.com/user-attachments/assets/82048917-b9bf-4ef3-b46c-2d04a584e7bf) |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **🎯 맞춤형 면접 연습**: JavaScript, React, Next.js, CS 등 카테고리별로 면접 질문을 선택하여 연습할 수 있습니다.
+- **💡 꼬리 질문 및 보완 설명**: 사용자의 답변을 분석하여 보완 설명과 함께 1~2개의 꼬리 질문을 제시하여 깊이 있는 학습을 유도합니다.
+- **🤖 Gemini AI 기반 면접관**: Google Gemini 2.5 Flash 모델을 활용하여 실제 면접관처럼 자연스럽고 논리적인 질문과 피드백을 제공합니다.
+- **📚 채팅 기록 관리**: 세션별로 면접 기록을 저장하고 관리할 수 있습니다.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🏗️ 기술 스택
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| 구분 | 기술 |
+|------|------|
+| **Framework** | [Next.js 14 (App Router)](https://nextjs.org/) |
+| **Language** | TypeScript |
+| **State Management** | Zustand (with persist middleware) |
+| **AI API** | Google Gemini (OpenAI 호환 API) |
+| **UI Library** | Tailwind CSS + Lucide Icons |
+| **Markdown Rendering** | React Markdown + remark-gfm + react-syntax-highlighter |
+| **Hosting** | [Vercel](https://vercel.com) |
+
+---
+
+## 🧑‍💻 개발자
+
+| 이름 | 역할 | GitHub |
+|------|------|---------|
+| **현혜주** | 전체 프로젝트 개발 및 디자인 | [github.com/hxezu](https://github.com/hxezu) |
+
+---
+
+## 🪄 향후 계획
+
+- [ ] 면접 요약 기능 (대화 요약)
+- [ ] 음성 인식 지원
+- [ ] 질문 카테고리 확장 (백엔드)
+- [ ] 다크모드
+
