@@ -5,67 +5,80 @@ import { ChatMessage } from "@/types/chat";
 import ChatMessageList from "./ChatMessageList";
 import ChatInput from "./ChatInput";
 import { useChatApi } from "@/hooks/useChatApi";
+import { useChatStore } from "@/stores/useChatStore";
 
 interface ChatSectionProps {
   sessionId: string;
   category: string;
-  messages: ChatMessage[];
-  addMessage: (sessionId: string, message: ChatMessage) => void;
 }
 
-export default function ChatSection({
-  sessionId,
-  category,
-  messages,
-  addMessage,
-}: ChatSectionProps) {
+export default function ChatSection({ sessionId, category }: ChatSectionProps) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const { sendMessage: sendApiMessage } = useChatApi();
-  const initialLoadRef = useRef(false);
 
-  // 초기 메시지 로드
+  const hasLoadedInitialMessage = useRef(false);
+  const { sessions, addMessage } = useChatStore();
+  const messages = sessions[sessionId]?.messages || [];
+
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    const unsub = useChatStore.persist.onFinishHydration(() => {
+      setIsHydrated(true);
+    });
+    setIsHydrated(useChatStore.persist.hasHydrated());
+    return () => unsub();
+  }, []);
+
   useEffect(() => {
     const loadInitialMessage = async () => {
-      if (messages.length === 0 && !initialLoadRef.current) {
-        initialLoadRef.current = true;
-        setLoading(true);
+      if (!isHydrated) return; // 아직 복원 전이면 실행 X
+      if (hasLoadedInitialMessage.current || messages.length > 0) return;
 
-        try {
-          const answer = await sendApiMessage({
-            category,
-            message: "",
-            context: [],
-          });
+      hasLoadedInitialMessage.current = true;
+      setLoading(true);
 
-          const assistantMsg: ChatMessage = {
-            id: crypto.randomUUID(),
-            role: "assistant",
-            text: answer,
-            timestamp: Date.now(),
-            category,
-          };
-          addMessage(sessionId, assistantMsg);
-        } catch (error) {
-          console.error("Failed to fetch initial message:", error);
-          const errorMsg: ChatMessage = {
-            id: crypto.randomUUID(),
-            role: "assistant",
-            text: "죄송합니다. 오류가 발생했습니다. 다시 시도해주세요.",
-            timestamp: Date.now(),
-            category,
-          };
-          addMessage(sessionId, errorMsg);
-        } finally {
-          setLoading(false);
-        }
+      try {
+        const answer = await sendApiMessage({
+          category,
+          message: "",
+          context: [],
+        });
+
+        const assistantMsg: ChatMessage = {
+          id: crypto.randomUUID(),
+          role: "assistant",
+          text: answer,
+          timestamp: Date.now(),
+          category,
+        };
+        addMessage(sessionId, assistantMsg);
+      } catch (error) {
+        console.error("Failed to fetch initial message:", error);
+        addMessage(sessionId, {
+          id: crypto.randomUUID(),
+          role: "assistant",
+          text: "죄송합니다. 오류가 발생했습니다. 다시 시도해주세요.",
+          timestamp: Date.now(),
+          category,
+        });
+      } finally {
+        setLoading(false);
       }
     };
 
     loadInitialMessage();
-  }, [sessionId, messages.length, category, addMessage, sendApiMessage]);
+  }, [
+    isHydrated,
+    sessionId,
+    category,
+    messages.length,
+    addMessage,
+    sendApiMessage,
+  ]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
@@ -74,6 +87,7 @@ export default function ChatSection({
     });
   }, [messages]);
 
+  // 키보드 높이 감지
   useEffect(() => {
     if (typeof window === "undefined" || !window.visualViewport) return;
 
@@ -106,6 +120,7 @@ export default function ChatSection({
     };
   }, []);
 
+  // Safe area 설정
   useEffect(() => {
     if (typeof window === "undefined") return;
     const safeArea = window
@@ -145,14 +160,13 @@ export default function ChatSection({
       addMessage(sessionId, botMsg);
     } catch (error) {
       console.error("Failed to send message:", error);
-      const errorMsg: ChatMessage = {
+      addMessage(sessionId, {
         id: crypto.randomUUID(),
         role: "assistant",
         text: "죄송합니다. 오류가 발생했습니다. 다시 시도해주세요.",
         timestamp: Date.now(),
         category,
-      };
-      addMessage(sessionId, errorMsg);
+      });
     } finally {
       setLoading(false);
     }

@@ -1,11 +1,10 @@
 "use client";
-
-import { useChat } from "@/hooks/useChat";
 import { useRouter, usePathname } from "next/navigation";
 import ChatListItem from "./ChatListItem";
+import { useChatStore } from "@/stores/useChatStore";
 
 export default function SidebarChatList() {
-  const { chatSessions, mounted, clearHistory } = useChat();
+  const { sessions, clearHistory, renameSession } = useChatStore();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -13,29 +12,21 @@ export default function SidebarChatList() {
     ? pathname.split("/chat/")[1]
     : null;
 
-  if (!mounted) {
-    return <div className="text-gray-400 text-sm p-2">로딩 중...</div>;
-  }
-
-  const chatEntries = Object.entries(chatSessions);
-
-  if (chatEntries.length === 0) {
-    return <></>;
-  }
+  const chatEntries = Object.entries(sessions);
+  if (chatEntries.length === 0) return null;
 
   return (
     <div className="space-y-1">
-      {chatEntries.map(([id, msgs]) => (
+      {chatEntries.map(([id, session]) => (
         <ChatListItem
           key={id}
           id={id}
-          msgs={msgs}
+          title={session.title}
+          msgs={session.messages}
           selected={selectedChatId === id}
           onSelect={() => router.push(`/chat/${id}`)}
-          onDelete={(chatId) => {
-            clearHistory(chatId);
-            if (selectedChatId === chatId) router.push("/");
-          }}
+          onDelete={(id) => clearHistory(id)}
+          onRename={(id, newTitle) => renameSession(id, newTitle)}
         />
       ))}
     </div>
