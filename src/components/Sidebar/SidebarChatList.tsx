@@ -2,6 +2,7 @@
 import { useRouter, usePathname } from "next/navigation";
 import ChatListItem from "./ChatListItem";
 import { useChatStore } from "@/stores/useChatStore";
+import toast from "react-hot-toast";
 
 export default function SidebarChatList() {
   const { sessions, deleteSession, renameSession } = useChatStore();
@@ -18,9 +19,13 @@ export default function SidebarChatList() {
   const handleDelete = (id: string) => {
     deleteSession(id);
 
-    if (selectedChatId === id) {
-      router.push("/");
-    }
+    toast.success(`대화를 삭제했어요`);
+    if (selectedChatId === id) router.push("/");
+  };
+
+  const handleRename = (id: string, newTitle: string) => {
+    renameSession(id, newTitle);
+    toast.success(`제목을 변경했어요`);
   };
 
   return (
@@ -34,7 +39,7 @@ export default function SidebarChatList() {
           selected={selectedChatId === id}
           onSelect={() => router.push(`/chat/${id}`)}
           onDelete={handleDelete}
-          onRename={(id, newTitle) => renameSession(id, newTitle)}
+          onRename={handleRename}
         />
       ))}
     </div>

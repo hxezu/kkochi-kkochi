@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import AppLayout from "@/components/Layout/AppLayout";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: {
@@ -55,6 +56,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
+        <Toaster position="top-center" />
         <AppLayout>{children}</AppLayout>
         <Analytics />
       </body>
