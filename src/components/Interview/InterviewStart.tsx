@@ -1,14 +1,15 @@
 "use client";
+
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/navigation";
 import { useChatStore } from "@/stores/useChatStore";
 import OnboardingSection from "@/components/Onboarding/OnboardingSection";
 
-export default function Home() {
+export default function InterviewStart() {
   const router = useRouter();
   const { sessions } = useChatStore();
 
-  const startChat = (category: string) => {
+  const handleStartInterview = (category: string) => {
     const sessionId = uuidv4();
 
     useChatStore.setState({
@@ -25,10 +26,8 @@ export default function Home() {
   };
 
   return (
-    <div className="flex justify-center items-center h-full">
-      <div className="w-full h-full">
-        <OnboardingSection onSelectCategory={startChat} />
-      </div>
+    <div className="w-full h-full">
+      <OnboardingSection onSelectCategory={handleStartInterview} />
     </div>
   );
 }

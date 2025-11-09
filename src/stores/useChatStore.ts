@@ -1,30 +1,26 @@
-// useChatStore.ts
 "use client";
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { ChatMessage } from "@/types/chat";
 
-type ChatSession = {
+interface ChatSession {
   title: string;
   messages: ChatMessage[];
-};
+}
 
-type ChatState = {
+interface ChatState {
   sessions: Record<string, ChatSession>;
-  hasHydrated: boolean;
-  setHasHydrated: (v: boolean) => void;
   addMessage: (sessionId: string, message: ChatMessage) => void;
   renameSession: (sessionId: string, newTitle: string) => void;
-  clearHistory: (sessionId?: string) => void;
-};
+  deleteSession: (sessionId: string) => void;
+  clearAllSessions: () => void;
+}
 
 export const useChatStore = create<ChatState>()(
   persist(
     (set, get) => ({
       sessions: {},
-      hasHydrated: false,
-      setHasHydrated: (v) => set({ hasHydrated: v }),
 
       addMessage: (sessionId, message) => {
         const { sessions } = get();
@@ -46,6 +42,7 @@ export const useChatStore = create<ChatState>()(
         const { sessions } = get();
         const target = sessions[sessionId];
         if (!target) return;
+
         set({
           sessions: {
             ...sessions,
@@ -57,22 +54,19 @@ export const useChatStore = create<ChatState>()(
         });
       },
 
-      clearHistory: (sessionId) => {
+      deleteSession: (sessionId) => {
         const { sessions } = get();
-        if (sessionId) {
-          const copy = { ...sessions };
-          delete copy[sessionId];
-          set({ sessions: copy });
-        } else {
-          set({ sessions: {} });
-        }
+        const newSessions = { ...sessions };
+        delete newSessions[sessionId];
+        set({ sessions: newSessions });
+      },
+
+      clearAllSessions: () => {
+        set({ sessions: {} });
       },
     }),
     {
       name: "chatSessions",
-      onRehydrateStorage: () => (state) => {
-        state?.setHasHydrated(true);
-      },
     }
   )
 );

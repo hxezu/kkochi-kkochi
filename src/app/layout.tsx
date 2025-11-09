@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
-import Sidebar from "@/components/Sidebar/Sidebar";
-import ChatSectionHeader from "@/components/Chatroom/ChatSectionHeader";
 import { Analytics } from "@vercel/analytics/next";
+import AppLayout from "@/components/Layout/AppLayout";
 
 export const metadata: Metadata = {
   title: {
@@ -14,8 +13,6 @@ export const metadata: Metadata = {
   keywords: [
     "프론트엔드",
     "면접",
-    "면접 준비",
-    "CS",
     "JavaScript",
     "React",
     "HTML/CSS",
@@ -45,14 +42,8 @@ export const metadata: Metadata = {
       },
     ],
   },
-
-  verification: {
-    // google: "your-google-verification-code", // Google Search Console 인증 코드
-    // yandex: "your-yandex-verification-code",
-    // other: "your-other-verification-code",
-  },
   alternates: {
-    canonical: "https://kkochi-kkochi.vercel.app/", // 실제 도메인으로 변경
+    canonical: "https://kkochi-kkochi.vercel.app/",
   },
 };
 
@@ -64,13 +55,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <div className="flex h-screen">
-          <Sidebar />
-          <div className="flex-1 flex flex-col">
-            <ChatSectionHeader />
-            <main className="flex-1 overflow-hidden">{children}</main>
-          </div>
-        </div>
+        <AppLayout>{children}</AppLayout>
         <Analytics />
       </body>
     </html>

@@ -10,12 +10,12 @@ import { useKeyboardOffset } from "@/hooks/useKeyboardOffset";
 import { useSafeArea } from "@/hooks/useSafeArea";
 import { useInitialMessage } from "@/hooks/useInitialMessage";
 
-interface ChatSectionProps {
+interface ChatRoomProps {
   sessionId: string;
   category: string;
 }
 
-export default function ChatSection({ sessionId, category }: ChatSectionProps) {
+export default function ChatRoom({ sessionId, category }: ChatRoomProps) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -33,50 +33,58 @@ export default function ChatSection({ sessionId, category }: ChatSectionProps) {
   );
 
   useEffect(() => {
-    scrollRef.current?.scrollTo({
-      top: scrollRef.current.scrollHeight,
-      behavior: "smooth",
-    });
-  }, [messages]);
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [messages.length]);
 
-  const sendMessage = async () => {
-    if (!input.trim()) return;
+  const handleSendMessage = async () => {
+    const trimmedInput = input.trim();
+    if (!trimmedInput || loading) return;
 
-    const userMsg: ChatMessage = {
+    const userMessage: ChatMessage = {
       id: crypto.randomUUID(),
       role: "user",
-      text: input,
+      text: trimmedInput,
       timestamp: Date.now(),
       category,
     };
-    addMessage(sessionId, userMsg);
+
+    addMessage(sessionId, userMessage);
     setInput("");
     setLoading(true);
 
     try {
       const answer = await sendApiMessage({
         category,
-        message: input,
+        message: trimmedInput,
         context: messages,
       });
 
-      const botMsg: ChatMessage = {
+      const assistantMessage: ChatMessage = {
         id: crypto.randomUUID(),
         role: "assistant",
         text: answer,
         timestamp: Date.now(),
         category,
       };
-      addMessage(sessionId, botMsg);
+
+      addMessage(sessionId, assistantMessage);
     } catch (error) {
       console.error("Failed to send message:", error);
-      addMessage(sessionId, {
+
+      const errorMessage: ChatMessage = {
         id: crypto.randomUUID(),
         role: "assistant",
         text: "죄송합니다. 오류가 발생했습니다. 다시 시도해주세요.",
         timestamp: Date.now(),
         category,
-      });
+      };
+
+      addMessage(sessionId, errorMessage);
     } finally {
       setLoading(false);
     }
@@ -86,7 +94,7 @@ export default function ChatSection({ sessionId, category }: ChatSectionProps) {
     <div className="relative flex flex-col h-full w-full max-w-3xl mx-auto">
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto px-4 pt-6 pb-24 scrollbar-hide"
+        className="flex-1 overflow-y-auto px-5 pt-6 pb-24 scrollbar-hide"
       >
         <ChatMessageList
           messages={messages}
@@ -104,8 +112,8 @@ export default function ChatSection({ sessionId, category }: ChatSectionProps) {
         <ChatInput
           input={input}
           setInput={setInput}
-          sendMessage={sendMessage}
-          loading={loading}
+          onSend={handleSendMessage}
+          disabled={loading}
         />
       </div>
     </div>

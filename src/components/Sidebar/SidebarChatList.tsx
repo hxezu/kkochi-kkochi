@@ -4,7 +4,7 @@ import ChatListItem from "./ChatListItem";
 import { useChatStore } from "@/stores/useChatStore";
 
 export default function SidebarChatList() {
-  const { sessions, clearHistory, renameSession } = useChatStore();
+  const { sessions, deleteSession, renameSession } = useChatStore();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -16,7 +16,7 @@ export default function SidebarChatList() {
   if (chatEntries.length === 0) return null;
 
   const handleDelete = (id: string) => {
-    clearHistory(id);
+    deleteSession(id);
 
     if (selectedChatId === id) {
       router.push("/");

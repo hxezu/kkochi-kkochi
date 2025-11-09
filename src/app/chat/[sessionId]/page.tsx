@@ -1,28 +1,25 @@
-"use client";
+import { notFound } from "next/navigation";
+import ChatRoom from "@/components/Chat/ChatRoom";
 
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-import ChatSection from "@/components/Chatroom/ChatSection";
+interface ChatPageProps {
+  params: Promise<{ sessionId: string }>;
+  searchParams: Promise<{ category?: string }>;
+}
 
-export default function ChatPage() {
-  const params = useParams();
-  const searchParams = useSearchParams();
-  const router = useRouter();
+export default async function ChatPage({
+  params,
+  searchParams,
+}: ChatPageProps) {
+  const { sessionId } = await params;
+  const { category = "전체" } = await searchParams;
 
-  const sessionId = params?.sessionId;
-  const category = searchParams?.get("category") || "전체";
-
-  useEffect(() => {
-    if (!sessionId || Array.isArray(sessionId)) {
-      router.replace("/");
-    }
-  }, [sessionId, router]);
-
-  if (!sessionId || Array.isArray(sessionId)) return null;
+  if (!sessionId) {
+    notFound();
+  }
 
   return (
     <div className="h-full flex justify-center overflow-hidden">
-      <ChatSection sessionId={sessionId} category={category} />
+      <ChatRoom sessionId={sessionId} category={category} />
     </div>
   );
 }

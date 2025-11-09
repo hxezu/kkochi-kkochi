@@ -6,7 +6,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import type { Components } from "react-markdown";
 
-interface AssistantBubbleProps {
+interface AssistantMessageProps {
   text: string;
   timestamp: number;
 }
@@ -17,10 +17,10 @@ interface CodeProps {
   children?: React.ReactNode;
 }
 
-export default function AssistantBubble({
+export default function AssistantMessage({
   text,
   timestamp,
-}: AssistantBubbleProps) {
+}: AssistantMessageProps) {
   const timeString = formatTime(timestamp);
 
   const components: Components = {

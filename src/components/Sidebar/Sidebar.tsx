@@ -1,22 +1,18 @@
 "use client";
 
+import { useEffect } from "react";
+import { useSidebarStore } from "@/stores/useSidebarStore";
 import SidebarHeader from "./SidebarHeader";
 import SidebarChatList from "./SidebarChatList";
 import SidebarFooter from "./SidebarFooter";
-import SidebarNewChatBtn from "./SidebarNewChatBtn";
-import { useSidebarStore } from "@/stores/useSidebarStore";
-import { useEffect } from "react";
+import NewChatButton from "./NewChatBtn";
 
 export default function Sidebar() {
   const { open, close, setOpen } = useSidebarStore();
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setOpen(false);
-      } else {
-        setOpen(true);
-      }
+      setOpen(window.innerWidth >= 768);
     };
 
     handleResize();
@@ -43,15 +39,15 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* 모바일 오버레이 */}
+      {/* Mobile Overlay */}
       {open && (
         <div
-          className="fixed inset-0 bg-black/50 z-80 md:hidden"
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
           onClick={close}
         />
       )}
 
-      {/* 사이드바 */}
+      {/* Sidebar */}
       <aside
         id="sidebar"
         className={`
@@ -70,7 +66,7 @@ export default function Sidebar() {
       >
         <div className="flex flex-col items-center px-2">
           <SidebarHeader />
-          <SidebarNewChatBtn />
+          <NewChatButton />
         </div>
 
         {open && (
