@@ -29,14 +29,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ko_KR",
-    url: "https://kkochi-kkochi.vercel.app/",
+    url: "https://www.kkochi-kkochi.com/",
     title: "꼬치꼬치 - 개발자를 위한 AI 면접관",
     description:
       "프론트엔드 개발자를 위한 AI 면접관 꼬치꼬치입니다. JavaScript, React, CS 등 다양한 주제로 면접을 준비하세요.",
     siteName: "꼬치꼬치",
     images: [
       {
-        url: "https://kkochi-kkochi.vercel.app/og-image.png",
+        url: "https://www.kkochi-kkochi.com/og-image.png",
         width: 1200,
         height: 630,
         alt: "꼬치꼬치 프론트엔드 개발자를 위한 AI 면접관",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: "https://kkochi-kkochi.vercel.app/",
+    canonical: "https://www.kkochi-kkochi.com/",
   },
 };
 

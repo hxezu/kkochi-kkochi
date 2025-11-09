@@ -1,19 +1,19 @@
 # 🐦 꼬치꼬치 (Kkochi-Kkochi)
 
-> 🔗 https://kkochi-kkochi.vercel.app/
-> 
+> 🔗 https://www.kkochi-kkochi.com/
+>
 > **개발 관련 지식을 꼬치꼬치 캐묻는 AI 면접관**
-> 
+>
 > CS, React, Javascript 등 다양한 주제로 실전처럼 연습하세요!
 
-[![배포 주소](https://kkochi-kkochi.vercel.app/og-image.png)](https://kkochi-kkochi.vercel.app/)
+[![배포 주소](https://www.kkochi-kkochi.com/og-image.png)](https://www.kkochi-kkochi.com/)
 
 ---
 
 ## 🚀 프로젝트 개요
 
 **꼬치꼬치**는 프론트엔드 개발자 면접 대비를 돕는 **AI 챗봇 기반 학습 서비스**입니다.  
-면접관처럼 질문하고, 사용자의 답변을 분석하여 피드백과 꼬리질문을 제공합니다.  
+면접관처럼 질문하고, 사용자의 답변을 분석하여 피드백과 꼬리질문을 제공합니다.
 
 > “오늘은 꼬치꼬치가 어떤 면접 질문을 캐물어볼까요?”
 
@@ -21,8 +21,8 @@
 
 ## ✨ 주요 기능
 
-| 온보딩 화면 | 면접 채팅 화면 |
-|--------------|----------------|
+| 온보딩 화면                                                                                     | 면접 채팅 화면                                                                                  |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | ![screenshot1](https://github.com/user-attachments/assets/66b7c8b3-1e27-46b5-bb27-99b1df55aaf2) | ![screenshot2](https://github.com/user-attachments/assets/82048917-b9bf-4ef3-b46c-2d04a584e7bf) |
 
 - **🎯 맞춤형 면접 연습**: JavaScript, React, Next.js, CS 등 카테고리별로 면접 질문을 선택하여 연습할 수 있습니다.
@@ -34,22 +34,22 @@
 
 ## 🏗️ 기술 스택
 
-| 구분 | 기술 |
-|------|------|
-| **Framework** | [Next.js 14 (App Router)](https://nextjs.org/) |
-| **Language** | TypeScript |
-| **State Management** | Zustand (with persist middleware) |
-| **AI API** | Google Gemini (OpenAI 호환 API) |
-| **UI Library** | Tailwind CSS + Lucide Icons |
+| 구분                   | 기술                                                   |
+| ---------------------- | ------------------------------------------------------ |
+| **Framework**          | [Next.js 14 (App Router)](https://nextjs.org/)         |
+| **Language**           | TypeScript                                             |
+| **State Management**   | Zustand (with persist middleware)                      |
+| **AI API**             | Google Gemini (OpenAI 호환 API)                        |
+| **UI Library**         | Tailwind CSS + Lucide Icons                            |
 | **Markdown Rendering** | React Markdown + remark-gfm + react-syntax-highlighter |
-| **Hosting** | [Vercel](https://vercel.com) |
+| **Hosting**            | [Vercel](https://vercel.com)                           |
 
 ---
 
 ## 🧑‍💻 개발자
 
-| 이름 | 역할 | GitHub |
-|------|------|---------|
+| 이름       | 역할                         | GitHub                                       |
+| ---------- | ---------------------------- | -------------------------------------------- |
 | **현혜주** | 전체 프로젝트 개발 및 디자인 | [github.com/hxezu](https://github.com/hxezu) |
 
 ---
@@ -60,4 +60,3 @@
 - [ ] 음성 인식 지원
 - [ ] 질문 카테고리 확장 (백엔드)
 - [ ] 다크모드
-
