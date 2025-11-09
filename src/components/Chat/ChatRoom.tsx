@@ -33,13 +33,18 @@ export default function ChatRoom({ sessionId, category }: ChatRoomProps) {
   );
 
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({
-        top: scrollRef.current.scrollHeight,
-        behavior: "smooth",
+    if (!scrollRef.current) return;
+
+    // 초기 로딩 완료 후 스크롤
+    if (!initialLoading && messages.length > 0) {
+      requestAnimationFrame(() => {
+        scrollRef.current?.scrollTo({
+          top: scrollRef.current.scrollHeight,
+          behavior: "smooth",
+        });
       });
     }
-  }, [messages.length]);
+  }, [messages.length, initialLoading]);
 
   const handleSendMessage = async () => {
     const trimmedInput = input.trim();
@@ -94,7 +99,7 @@ export default function ChatRoom({ sessionId, category }: ChatRoomProps) {
     <div className="relative flex flex-col h-full w-full max-w-3xl mx-auto">
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto px-7 pt-6 pb-24 scrollbar-hide"
+        className="flex-1 overflow-y-auto px-7 pt-6 pb-30 scrollbar-hide"
       >
         <ChatMessageList
           messages={messages}

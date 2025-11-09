@@ -14,11 +14,16 @@ interface ChatMessageListProps {
 export default function ChatMessageList({
   messages,
   loading,
+  scrollRef,
 }: ChatMessageListProps) {
   return (
     <div className="flex flex-col gap-4">
       {messages.map((message) => (
-        <MessageBubble key={message.id} message={message} />
+        <MessageBubble
+          key={message.id}
+          message={message}
+          scrollRef={scrollRef}
+        />
       ))}
       {loading && <LoadingIndicator />}
     </div>

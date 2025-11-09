@@ -5,10 +5,13 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import type { Components } from "react-markdown";
+import { useEffect, useState, RefObject } from "react";
 
 interface AssistantMessageProps {
   text: string;
   timestamp: number;
+  id: string;
+  scrollRef?: RefObject<HTMLDivElement | null>;
 }
 
 interface CodeProps {
@@ -20,11 +23,57 @@ interface CodeProps {
 export default function AssistantMessage({
   text,
   timestamp,
+  id,
+  scrollRef,
 }: AssistantMessageProps) {
   const timeString = formatTime(timestamp);
+  const [displayedText, setDisplayedText] = useState("");
+
+  // 스크롤 헬퍼 함수
+  const scrollToBottom = () => {
+    if (!scrollRef?.current) return;
+    requestAnimationFrame(() => {
+      scrollRef.current?.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    });
+  };
+
+  useEffect(() => {
+    const stored = localStorage.getItem("animatedMessages");
+    const animatedMessages: Set<string> = stored
+      ? new Set(JSON.parse(stored))
+      : new Set();
+
+    if (animatedMessages.has(String(id))) {
+      setDisplayedText(text);
+      scrollToBottom(); // 이미 애니메이션 끝난 메시지도 스크롤
+      return;
+    }
+
+    let currentIndex = 0;
+    const interval = setInterval(() => {
+      currentIndex++;
+      setDisplayedText(text.slice(0, currentIndex));
+
+      // 타이핑 애니메이션 중 스크롤
+      scrollToBottom();
+
+      if (currentIndex >= text.length) {
+        clearInterval(interval);
+        animatedMessages.add(String(id));
+        localStorage.setItem(
+          "animatedMessages",
+          JSON.stringify([...animatedMessages])
+        );
+      }
+    }, 20);
+
+    return () => clearInterval(interval);
+  }, [text, id, scrollRef]);
 
   const components: Components = {
-    // 코드 블록
     code({ inline, className, children }: CodeProps) {
       const match = /language-(\w+)/.exec(className || "");
       const codeString = String(children).replace(/\n$/, "");
@@ -48,74 +97,44 @@ export default function AssistantMessage({
         </code>
       );
     },
-    // 볼드
-    strong({ children }) {
-      return <strong className="font-bold text-gray-900">{children}</strong>;
-    },
-    // 이탤릭
-    em({ children }) {
-      return <em className="italic text-gray-700">{children}</em>;
-    },
-    // 링크
-    a({ href, children }) {
-      return (
-        <a
-          href={href}
-          className="text-blue-600 hover:text-blue-800 underline"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {children}
-        </a>
-      );
-    },
-    // 리스트
-    ul({ children }) {
-      return (
-        <ul className="list-disc list-inside my-2 space-y-1 ml-4">
-          {children}
-        </ul>
-      );
-    },
-    ol({ children }) {
-      return (
-        <ol className="list-decimal list-inside my-2 space-y-1 ml-4">
-          {children}
-        </ol>
-      );
-    },
-    // 단락
-    p({ children }) {
-      return <p className="my-2 leading-relaxed">{children}</p>;
-    },
-    // 제목
-    h1({ children }) {
-      return (
-        <h1 className="text-xl font-bold my-3 text-gray-900">{children}</h1>
-      );
-    },
-    h2({ children }) {
-      return (
-        <h2 className="text-lg font-bold my-3 text-gray-900">{children}</h2>
-      );
-    },
-    h3({ children }) {
-      return (
-        <h3 className="text-base font-bold my-2 text-gray-900">{children}</h3>
-      );
-    },
-    // 구분선
-    hr() {
-      return <hr className="my-4 border-gray-300" />;
-    },
-    // 인용구
-    blockquote({ children }) {
-      return (
-        <blockquote className="border-l-4 border-gray-400 pl-4 my-2 italic text-gray-600">
-          {children}
-        </blockquote>
-      );
-    },
+    strong: ({ children }) => (
+      <strong className="font-bold text-gray-900">{children}</strong>
+    ),
+    em: ({ children }) => <em className="italic text-gray-700">{children}</em>,
+    a: ({ href, children }) => (
+      <a
+        href={href}
+        className="text-blue-600 hover:text-blue-800 underline"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {children}
+      </a>
+    ),
+    ul: ({ children }) => (
+      <ul className="list-disc list-inside my-2 space-y-1 ml-4">{children}</ul>
+    ),
+    ol: ({ children }) => (
+      <ol className="list-decimal list-inside my-2 space-y-1 ml-4">
+        {children}
+      </ol>
+    ),
+    p: ({ children }) => <p className="my-2 leading-relaxed">{children}</p>,
+    h1: ({ children }) => (
+      <h1 className="text-xl font-bold my-3 text-gray-900">{children}</h1>
+    ),
+    h2: ({ children }) => (
+      <h2 className="text-lg font-bold my-3 text-gray-900">{children}</h2>
+    ),
+    h3: ({ children }) => (
+      <h3 className="text-base font-bold my-2 text-gray-900">{children}</h3>
+    ),
+    hr: () => <hr className="my-4 border-gray-300" />,
+    blockquote: ({ children }) => (
+      <blockquote className="border-l-4 border-gray-400 pl-4 my-2 italic text-gray-600">
+        {children}
+      </blockquote>
+    ),
   };
 
   return (
@@ -124,7 +143,7 @@ export default function AssistantMessage({
       <div className="flex justify-start space-x-2">
         <div className="bg-white text-gray-800 text-[13px] md:text-[15px] px-4 py-2 md:p-4 rounded-xl max-w-[70%] lg:max-w-[540px]">
           <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
-            {text}
+            {displayedText}
           </ReactMarkdown>
         </div>
         <span className="text-[10px] md:text-xs text-gray-400 flex items-end">
