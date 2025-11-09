@@ -55,14 +55,16 @@ export default function Sidebar() {
           top-0 left-0 h-screen
           bg-white 
           flex flex-col justify-between
-          transition-all duration-300 ease-in-out
-          z-100
+          z-50
           ${
             open
               ? "translate-x-0 w-64"
               : "-translate-x-full md:translate-x-0 md:w-16"
           }
         `}
+        style={{
+          transition: "transform 300ms ease-in-out, width 300ms ease-in-out",
+        }}
       >
         <div className="flex flex-col items-center px-2">
           <SidebarHeader />
