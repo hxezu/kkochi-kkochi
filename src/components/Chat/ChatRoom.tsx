@@ -94,7 +94,7 @@ export default function ChatRoom({ sessionId, category }: ChatRoomProps) {
     <div className="relative flex flex-col h-full w-full max-w-3xl mx-auto">
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto px-5 pt-6 pb-24 scrollbar-hide"
+        className="flex-1 overflow-y-auto px-7 pt-6 pb-24 scrollbar-hide"
       >
         <ChatMessageList
           messages={messages}
@@ -104,7 +104,7 @@ export default function ChatRoom({ sessionId, category }: ChatRoomProps) {
       </div>
 
       <div
-        className="absolute left-1/2 -translate-x-1/2 w-full max-w-3xl px-4 transition-all duration-200"
+        className="absolute left-1/2 -translate-x-1/2 w-full max-w-3xl px-6 transition-all duration-200"
         style={{
           bottom: `calc(${keyboardOffset}px + env(safe-area-inset-bottom, 0px))`,
         }}

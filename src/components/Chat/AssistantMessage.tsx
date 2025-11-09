@@ -122,7 +122,7 @@ export default function AssistantMessage({
     <div className="space-y-4">
       <Image src="/logo.svg" alt="챗봇 이미지" width={32} height={30} />
       <div className="flex justify-start space-x-2">
-        <div className="bg-white text-gray-800 text-[13px] md:text-[15px] p-2 md:p-4 rounded-xl max-w-[70%] lg:max-w-[540px]">
+        <div className="bg-white text-gray-800 text-[13px] md:text-[15px] px-4 py-2 md:p-4 rounded-xl max-w-[70%] lg:max-w-[540px]">
           <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
             {text}
           </ReactMarkdown>

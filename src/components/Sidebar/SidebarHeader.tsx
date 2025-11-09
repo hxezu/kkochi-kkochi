@@ -28,7 +28,7 @@ export default function SidebarHeader() {
     <div className="h-[60px] p-2 w-full flex items-center justify-center">
       <button
         onClick={toggle}
-        className="relative w-8 h-8 flex items-center justify-center cursor-pointer rounded hover:bg-gray-100 group "
+        className="relative w-8 h-8 flex items-center justify-center cursor-pointer rounded hover:bg-gray-100 group text-[var(--color-primary-200)] "
       >
         <PanelLeft
           size={20}
