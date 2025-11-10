@@ -31,7 +31,7 @@ export default function NewChatButton() {
       aria-label="새 채팅"
     >
       <div className="bg-[var(--color-primary-100-50)] w-5 h-5 rounded-full flex justify-center items-center">
-        <Plus size={12} />
+        <Plus size={12} strokeWidth={3} />
       </div>
     </button>
   );

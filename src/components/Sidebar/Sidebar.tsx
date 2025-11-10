@@ -77,7 +77,7 @@ export default function Sidebar() {
           </div>
         )}
 
-        <SidebarFooter />
+        {/* <SidebarFooter /> */}
       </aside>
     </>
   );
