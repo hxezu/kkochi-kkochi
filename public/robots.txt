@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.kkochi-kkochi.com
+
+# Sitemaps
+Sitemap: https://www.kkochi-kkochi.com/sitemap.xml
