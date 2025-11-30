@@ -10,7 +10,7 @@ export default function OnboardingSection({
   onSelectCategory,
 }: OnboardingSectionProps) {
   return (
-    <div className="flex flex-col h-full items-center justify-center gap-10">
+    <div className="flex flex-col h-full items-center justify-center gap-6">
       <OnboardingLogo />
       <OnboardingSlogan />
       <CategorySelect onSelectCategory={onSelectCategory} />
